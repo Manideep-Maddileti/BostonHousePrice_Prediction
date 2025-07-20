@@ -1,5 +1,3 @@
-# BostonHousePrice_Prediction
-# BostonHousePrice_Prediction
 # 🏠 Boston House Price Prediction
 
 ## 🛠️ Software and Tool Requirements
