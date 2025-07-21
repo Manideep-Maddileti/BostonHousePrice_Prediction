@@ -1,3 +1,442 @@
-<h1>
-    hello
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boston House Price Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-dark: #121927;
+            --card-background: #1C2738;
+            --text-light: #E0E6EF;
+            --text-muted: #8496B3;
+            --primary-blue: #5C6BC0;
+            --border-color: #354157;
+            --button-background: #5C6BC0;
+            --button-hover: #4E59A6;
+            --button-text: #FFFFFF;
+            --font-family-body: 'Inter', sans-serif;
+            --font-family-heading: 'Rubik', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family-body);
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 80px 20px 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 350px;
+            position: relative;
+        }
+
+        .hero-icon {
+            margin-bottom: 20px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+        }
+
+        .hero h1 {
+            font-family: var(--font-family-heading);
+            font-size: 3.2em;
+            margin-bottom: 5px;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .hero h1 span {
+            color: var(--primary-blue);
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .card-section {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            margin-top: -30px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-section h2 {
+            font-family: var(--font-family-heading);
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .card-section p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95em;
+            margin-bottom: 30px;
+        }
+
+        .prediction-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px 30px;
+            padding: 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="number"]::placeholder {
+            color: #5A6D88;
+        }
+
+        .form-group input[type="number"]:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.3);
+        }
+
+        .form-group .input-description {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .predict-button {
+            background-color: var(--button-background);
+            color: var(--button-text);
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .predict-button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .predict-button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        .predict-button:active {
+            transform: translateY(0);
+        }
+
+        .about-model-section {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            margin-top: 40px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .about-model-section h2 {
+            font-family: var(--font-family-heading);
+            font-size: 2em;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .about-model-section p {
+            font-size: 1em;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .prediction-result-section {
+            background-color: var(--card-background);
+            color: var(--text-light);
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: {% if prediction_text %} block {% else %} none {% endif %};
+        }
+
+        .prediction-result-section h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        #predictionResult {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-blue);
+            min-height: 1.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px 40px;
+                min-height: 280px;
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .card-section {
+                padding: 30px;
+                margin-top: -20px;
+            }
+            .prediction-form {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .form-actions {
+                margin-top: 20px;
+            }
+            .predict-button {
+                width: 100%;
+                padding: 12px 20px;
+            }
+            .about-model-section {
+                margin-top: 30px;
+                padding: 30px;
+            }
+            .about-model-section h2 {
+                font-size: 1.8em;
+            }
+            #predictionResult {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            .hero-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+            }
+            .container {
+                padding: 0 15px;
+            }
+            .card-section {
+                padding: 20px;
+            }
+            .card-section h2 {
+                font-size: 1.5em;
+            }
+            .card-section p.subtitle {
+                font-size: 0.85em;
+                margin-bottom: 20px;
+            }
+            .form-group input[type="number"] {
+                padding: 10px 12px;
+            }
+            .predict-button {
+                font-size: 1em;
+            }
+            .about-model-section h2 {
+                font-size: 1.6em;
+            }
+            .about-model-section p {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2zm0 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+        </div>
+        <div class="container">
+            <h1>Boston House Price <span class="blue-text">Predictor</span></h1>
+            <p>Predict house prices in Boston using machine learning. Enter the property characteristics below to get an estimated market value.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card-section prediction-form-section">
+            <h2>Property Features</h2>
+            <p class="subtitle">Enter the property characteristics to predict the house price</p>
+            <form class="prediction-form" id="predictionForm" action="/predict" method="post">
+                <div class="form-group">
+                    <label for="crim">CRIM</label>
+                    <input type="number" id="crim" name="CRIM" step="any" placeholder="e.g., 0.00632" required>
+                    <div class="input-description">Per capita crime rate by town</div>
+                </div>
+                <div class="form-group">
+                    <label for="zn">ZN</label>
+                    <input type="number" id="zn" name="ZN" step="any" placeholder="e.g., 18.0" required>
+                    <div class="input-description">Proportion of residential land zoned for large lots</div>
+                </div>
+                <div class="form-group">
+                    <label for="indus">INDUS</label>
+                    <input type="number" id="indus" name="INDUS" step="any" placeholder="e.g., 2.31" required>
+                    <div class="input-description">Proportion of non-retail business acres per town</div>
+                </div>
+                <div class="form-group">
+                    <label for="nox">NOX</label>
+                    <input type="number" id="nox" name="NOX" step="any" placeholder="e.g., 0.538" required>
+                    <div class="input-description">Nitric oxides concentration (parts per 10 million)</div>
+                </div>
+                <div class="form-group">
+                    <label for="rm">RM</label>
+                    <input type="number" id="rm" name="RM" step="any" placeholder="e.g., 6.575" required>
+                    <div class="input-description">Average number of rooms per dwelling</div>
+                </div>
+                <div class="form-group">
+                    <label for="age">AGE</label>
+                    <input type="number" id="age" name="AGE" step="any" placeholder="e.g., 65.2" required>
+                    <div class="input-description">Proportion of owner-occupied units built prior to 1940</div>
+                </div>
+                <div class="form-group">
+                    <label for="dis">DIS</label>
+                    <input type="number" id="dis" name="DIS" step="any" placeholder="e.g., 4.0900" required>
+                    <div class="input-description">Weighted distances to employment centers</div>
+                </div>
+                <div class="form-group">
+                    <label for="tax">TAX</label>
+                    <input type="number" id="tax" name="TAX" step="any" placeholder="e.g., 296.0" required>
+                    <div class="input-description">Property tax rate per $10,000</div>
+                </div>
+                <div class="form-group">
+                    <label for="ptratio">PTRATIO</label>
+                    <input type="number" id="ptratio" name="PTRATIO" step="any" placeholder="e.g., 15.3" required>
+                    <div class="input-description">Pupil-teacher ratio by town</div>
+                </div>
+                <div class="form-group">
+                    <label for="b">B</label>
+                    <input type="number" id="b" name="B" step="any" placeholder="e.g., 396.90" required>
+                    <div class="input-description">1000(Bk - 0.63)^2 where Bk is proportion of Black residents</div>
+                </div>
+                <div class="form-group">
+                    <label for="lstat">LSTAT</label>
+                    <input type="number" id="lstat" name="LSTAT" step="any" placeholder="e.g., 4.98" required>
+                    <div class="input-description">% lower status of the population</div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="predict-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59L9.4 12.01 11.83 14.44 20.44 5.83V9h2V3h-8z"/></svg>
+                        Predict Price
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="prediction-result-section" id="predictionResultSection">
+            <h2>Predicted House Price</h2>
+            <div id="predictionResult">
+                {{ prediction_text | default('Enter values above and click \'Predict Price\'') }}
+            </div>
+        </section>
+
+        <section class="card-section about-model-section">
+            <h2>About the Model</h2>
+            <p>This predictor uses the classic Boston Housing dataset features to estimate property values. The model considers various socioeconomic and environmental factors that influence housing prices in the Boston metropolitan area.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Boston House Price Predictor. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
