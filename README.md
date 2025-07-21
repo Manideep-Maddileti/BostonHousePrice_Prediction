@@ -17,6 +17,5 @@ To run and deploy this project, make sure the following tools are installed and 
    Command-line tool to manage your project with Git, push code to GitHub, and deploy to Heroku.
 
 ```
- conda create -p venv python==3.8 -y
-
- ```
+conda create -p venv python==3.8 -y
+```
